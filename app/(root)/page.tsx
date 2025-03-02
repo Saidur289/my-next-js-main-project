@@ -13,6 +13,16 @@ export default async function Home({searchParams}) {
       image: 'https://i.ibb.co.com/vCGLcgTg/pexels-tuurt-812264.jpg',
       category: 'Robots',
       title: 'We Robots'
+    },
+    {
+      _createdAt: new Date(),
+      views: 55,
+      author: {_id: 2, name: 'saidur'},
+      _id: 2,
+      description: 'This is a description',
+      image: 'https://i.ibb.co.com/vCGLcgTg/pexels-tuurt-812264.jpg',
+      category: 'Robots',
+      title: 'We Robots'
     }
   ]
   const query = (await searchParams).query
@@ -27,15 +37,17 @@ export default async function Home({searchParams}) {
     <p className="text-30-semibold">
       {query ? `Search Results For ${query}`: 'All Startups'}
     </p>
-    <ul className="mt-7 card_grid grid grid-cols-1 md:grid-cols-3"></ul>
-      {
+    <ul className="mt-7 card_grid  grid grid-cols-1 md:grid-cols-3">
+    {
         posts?.length>0 ?(
           posts.map((post: StartupCardType, index: number) => <StartupCard post= {post} key={index}/>)
 
         ): (
-          <p className="no-results">No Startups found</p>
+          <li className="no-results">No Startups found</li>
         )
       }
+    </ul>
+     
   </section>
     </>
   );
