@@ -1,31 +1,40 @@
+
 import SearchForm from "../components/SearchForm";
-import StartupCard from "../components/StartupCard";
+import StartupCard, { StartupTypeCard } from "../components/StartupCard";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 
 
 export default async function Home({searchParams}) {
-  const posts = [
-    {
-      _createdAt: new Date(),
-      views: 55,
-      author: {_id: 1, name: 'saidur'},
-      _id: 1,
-      description: 'This is a description',
-      image: 'https://i.ibb.co.com/vCGLcgTg/pexels-tuurt-812264.jpg',
-      category: 'Robots',
-      title: 'We Robots'
-    },
-    {
-      _createdAt: new Date(),
-      views: 55,
-      author: {_id: 2, name: 'saidur'},
-      _id: 2,
-      description: 'This is a description',
-      image: 'https://i.ibb.co.com/vCGLcgTg/pexels-tuurt-812264.jpg',
-      category: 'Robots',
-      title: 'We Robots'
-    }
-  ]
+  // const posts = await client.fetch(STARTUPS_QUERY)
+  // console.log(JSON.stringify(posts), 'kire posts');
+  
+  // const posts = [
+  //   {
+  //     _createdAt: new Date(),
+  //     views: 55,
+  //     author: {_id: 1, name: 'saidur'},
+  //     _id: 1,
+  //     description: 'This is a description',
+  //     image: 'https://i.ibb.co.com/vCGLcgTg/pexels-tuurt-812264.jpg',
+  //     category: 'Robots',
+  //     title: 'We Robots'
+  //   },
+  //   {
+  //     _createdAt: new Date(),
+  //     views: 55,
+  //     author: {_id: 2, name: 'saidur'},
+  //     _id: 2,
+  //     description: 'This is a description',
+  //     image: 'https://i.ibb.co.com/vCGLcgTg/pexels-tuurt-812264.jpg',
+  //     category: 'Robots',
+  //     title: 'We Robots'
+  //   }
+  // ]
+  
   const query = (await searchParams).query
+  const params = {search: query || null}
+  const {data: posts} = await sanityFetch({query: STARTUPS_QUERY, params})
   return (
     <>
   <section className="w-full  bg-[#EE2B69] min-h-[530px]  flex justify-center items-center flex-col py-10 px-6 pattern">
@@ -40,7 +49,7 @@ export default async function Home({searchParams}) {
     <ul className="mt-7 card_grid  grid grid-cols-1 md:grid-cols-3">
     {
         posts?.length>0 ?(
-          posts.map((post: StartupCardType, index: number) => <StartupCard post= {post} key={index}/>)
+          posts.map((post: StartupTypeCard, index: number) => <StartupCard post= {post} key={index}/>)
 
         ): (
           <li className="no-results">No Startups found</li>
@@ -49,6 +58,7 @@ export default async function Home({searchParams}) {
     </ul>
      
   </section>
+  <SanityLive/>
     </>
   );
 }
